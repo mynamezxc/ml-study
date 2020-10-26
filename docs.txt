@@ -1,0 +1,5 @@
+# pip install scikit-learn # Tạo model, cây quyết định
+# pip install numpy # Sử lý mảng
+# pip install scipy #
+# pip install matplotlib # Vẽ biểu đồ
+# pip install pandas # Đọc file csv để train
