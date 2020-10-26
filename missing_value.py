@@ -3,7 +3,7 @@ from sklearn.impute import SimpleImputer
 import pandas
 import numpy as np
 
-data = pandas.read_csv("missing.csv", header=1, error_bad_lines=False)
+data = pandas.read_csv("./csv/missing.csv", header=1, error_bad_lines=False)
 print(data)
 
 data = data.values
