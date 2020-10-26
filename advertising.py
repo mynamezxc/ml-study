@@ -5,7 +5,7 @@ from matplotlib import pyplot
 from sklearn.impute import SimpleImputer
 
 
-def predict(x, weight, bias): # Hàm dự đoán
+def predict(x, weight, bias): # Tính giá trị dự đoán
     return weight * x + bias
 
 
@@ -13,24 +13,24 @@ def cost_calcualation(x, y, weight, bias): # Tính tổng lỗi
     n = len(x)
     total_error = 0
     for i in range(n):
-        total_error += (y[i] - (weight * x[i] + bias))**2 # bình phương của giá trị thực - giá trị dự đoán
+        total_error += (y[i] - (predict(x[i], weight, bias)))**2 # bình phương của giá trị thực - giá trị dự đoán
     total_error = total_error / n # Trung bình tổng
     return total_error
 
 
-def update_weight(x, y, weight, bias, learning_rate):
+def update_weight(x, y, weight, bias, learning_rate): # Cập nhật hệ số và giá trị lệch mới
     n = len(x)
     weight_temp = 0.0
     bias_temp = 0.0
     for i in range(n):
         # Tính đạo hàm của weight = -2*x[i] * (giá trị thực - giá trị dự đoán)
-        weight_temp += -2 * x[i] * (y[i] - (x[i] * weight + bias))
+        weight_temp += -2 * x[i] * (y[i] - (predict(x[i], weight, bias)))
         # Tính đạo hàm của bias = -2 * (giá trị thực - giá trị dự đoán)
-        bias_temp += -2 * (y[i] - (x[i] * weight + bias))
+        bias_temp += -2 * (y[i] - (predict(x[i], weight, bias)))
     # Tính trung bình của weight, bias
     # Công thức cho weight hoặc bias = a:  a = a - (trung bình tổng) * learning_rate
-    weight -= (weight_temp/n) * learning_rate
-    bias -= (bias_temp/n) * learning_rate
+    weight -= (weight_temp/n) * learning_rate # Weight trừ biên độ sai số
+    bias -= (bias_temp/n) * learning_rate # Bias trừ biên độ sai số
     return weight, bias
 
 
@@ -50,17 +50,17 @@ pyplot.scatter(x, y, marker="o")
 pyplot.show()
 
 interval = 5000 # Số lần tối ưu
-weight = 0.03 # Hệ số của x
+weight = 0.03 # Hệ số của x mặc định
 bias = 0.014 # Giá trị lệch mặc định
 learning_rate = 0.001 # Tốc độ học, bước học
 weight, bias, cost_history = training(x, y, 0.03, 0.014, learning_rate, interval)
-
-rating = 7
-sales = rating * weight + bias
-print("Kết quả: ")
-print(sales)
 
 # In ra các sai số theo số lần lặp, sai số sẽ nhỏ lại
 loop = [i for i in range(interval)]
 pyplot.plot(loop, cost_history)
 pyplot.show()
+
+# rating = 7
+# sales = rating * weight + bias
+# print("Kết quả: ")
+# print(sales)
